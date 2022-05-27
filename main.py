@@ -124,6 +124,7 @@ def exit_command(args):
     global running, ssh_session, localhost
     if ssh_session:
         localhost = prev_localhost
+        console(f"{localhost.hostname}@{localhost.ip}")
         ssh_session = False
         return
     running = False
@@ -155,12 +156,13 @@ def ipconfig_command(args):
 
 
 def ssh_command(args):
-    global localhost, ssh_session
+    global localhost, ssh_session, prev_localhost
     for computer in computers:
         if computer.hostname != "SysAdmin":
             if computer.ip == args[0]:
                 prev_localhost = localhost
                 localhost = computer
+                console(f"{localhost.hostname}@{localhost.ip}")
                 ssh_session = True
             else:
                 console(f"Unknown ip {args[0]}")
