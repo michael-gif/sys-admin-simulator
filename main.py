@@ -124,7 +124,7 @@ def exit_command(args):
     global running, ssh_session, localhost
     if ssh_session:
         localhost = prev_localhost
-        console(f"{localhost.hostname}@{localhost.ip}")
+        console(f"Stopped SSH session {localhost.hostname}@{localhost.ip}")
         ssh_session = False
         return
     running = False
@@ -162,7 +162,7 @@ def ssh_command(args):
             if computer.ip == args[0]:
                 prev_localhost = localhost
                 localhost = computer
-                console(f"{localhost.hostname}@{localhost.ip}")
+                console(f"Started SSH session {localhost.hostname}@{localhost.ip}")
                 ssh_session = True
             else:
                 console(f"Unknown ip {args[0]}")
