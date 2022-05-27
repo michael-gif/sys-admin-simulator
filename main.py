@@ -8,10 +8,11 @@ from event_system import event_handler, Event
 from computers import SysAdmin, Server
 
 computers = [SysAdmin, Server]
-localhost = computers[1]
+localhost = computers[0]
 
 pygame.init()
-screen = pygame.display.set_mode((400, 400))#, pygame.FULLSCREEN)
+screen = pygame.display.set_mode((800, 400))#, pygame.FULLSCREEN)
+pygame.display.set_caption(f"cmd.exe - {localhost.hostname}")
 clock = pygame.time.Clock()
 
 history = []
@@ -98,7 +99,7 @@ def cd_command(args):
         full_path = localhost.path_exists(absolute_path)
         if full_path:
             localhost.CD = full_path
-            key_handler.localhost.CD = localhost.CD
+            key_handler.CD = localhost.CD
         else:
             console("Could not find the path specified")
 

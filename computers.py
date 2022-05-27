@@ -3,8 +3,9 @@ import pygame
 pygame.font.init()
 
 class Computer:
-    def __init__(self):
+    def __init__(self, hostname):
         self.drives = {}
+        self.hostname = hostname
         self.CD = "C:"
         self.font_size = 12
         self.font_color = (255, 255, 255)
@@ -81,7 +82,7 @@ class Folder():
         return self
 
 
-SysAdmin = Computer()
+SysAdmin = Computer("SysAdmin")
 SysAdmin.contains(Drive("C")
                    .contains(Folder("Windows"))
                    .contains(Folder("Users")
@@ -109,7 +110,7 @@ SysAdmin.contains(Drive("C")
                    )
 SysAdmin.contains(Drive("D"))
 
-Server = Computer()
+Server = Computer("server")
 Server.contains(Drive("C")
                    .contains(Folder("Windows"))
                    .contains(Folder("Users")
