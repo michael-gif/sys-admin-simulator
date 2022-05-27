@@ -7,7 +7,7 @@ from event_system import event_handler, Event
 from file_system import hard_disk
 
 pygame.init()
-screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
+screen = pygame.display.set_mode((400, 400))#, pygame.FULLSCREEN)
 clock = pygame.time.Clock()
 CD = "C:"
 font_size = 12
@@ -68,7 +68,23 @@ def process_command(command):
 
 
 def cd_command(args):
-    console(CD)
+    global CD
+    if not args:
+        console(CD)
+    else:
+        if args[0] == '.' or args[0] == './':
+            console(CD)
+            return
+        if args[0].startswith('./'):
+            absolute_path = CD + args[0][1:]
+        elif args[0].startswith(CD + "/"):
+            absolute_path = args[0]
+        else:
+            absolute_path = CD + "/" + args[0]
+        if hard_disk.path_exists(absolute_path):
+            CD = absolute_path
+        else:
+            console("Could not find the path specified")
 
 
 def help_command(args):

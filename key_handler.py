@@ -19,21 +19,19 @@ class KeyHandler:
         key_ascii = pygame.key.name(key)
 
         # sticky keys
-        if not pygame.key.get_pressed()[pygame.K_LSHIFT] and self.left_shift:
-            self.left_shift = False
-        if not pygame.key.get_pressed()[pygame.K_RSHIFT] and self.right_shift:
-            self.left_shift = False
-        if not pygame.key.get_pressed()[pygame.K_LCTRL] and self.left_ctrl:
-            self.left_ctrl = False
+        keys = pygame.key.get_pressed()
         if key_ascii == "left shift":
-            if not self.left_shift:
-                self.left_shift = True
+            self.left_shift = True
         if key_ascii == "right shift":
-            if not self.right_shift:
-                self.right_shift = True
+            self.right_shift = True
         if key_ascii == "left ctrl":
-            if not self.left_ctrl:
-                self.left_ctrl = True
+            self.left_ctrl = True
+        if not keys[pygame.K_LSHIFT]:
+            self.left_shift = False
+        if not keys[pygame.K_RSHIFT]:
+            self.right_shift = False
+        if not keys[pygame.K_LCTRL]:
+            self.left_ctrl = False
 
         # alpha numerical keys
         if key_ascii in string.ascii_lowercase:
@@ -42,9 +40,14 @@ class KeyHandler:
                 return
             self.command_input += key_ascii
         if key_ascii in string.digits:
+            if self.left_shift or self.right_shift:
+                self.command_input += "!\"£$%^&*()"[int(key_ascii)]
+                return
             self.command_input += key_ascii
 
         # other keys
+        if key_ascii in "!\"£$%^&*()-=_+[]{};'#:@~,./<>?\\|":
+            self.command_input += key_ascii
         if key_ascii == "return":
             self.history.append(f"{self.CD}> {self.command_input}")
             self.command_history.append(self.command_input)
