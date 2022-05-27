@@ -6,10 +6,11 @@ from key_handler import KeyHandler
 from event_system import event_handler, Event
 
 pygame.init()
-screen = pygame.display.set_mode((400, 400))  # , pygame.FULLSCREEN)
+screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
 clock = pygame.time.Clock()
 CD = "C:"
 font_size = 12
+font_color = (255, 255, 255)
 font = pygame.font.SysFont("Consolas", font_size)
 
 
@@ -34,7 +35,7 @@ def render_history():
     else:
         visible_history = history
     for i in range(len(visible_history)):
-        text = font.render(str(visible_history[i]), False, (255, 255, 255))
+        text = font.render(str(visible_history[i]), False, font_color)
         screen.blit(text, (5, 5 + (i * font_size)))
 
 
@@ -47,7 +48,7 @@ cursor_delay = 0.5
 cursor_visible = False
 def render_input():
     global cursor_visible, prev_time
-    text = font.render(CD + "> " + key_handler.command_input, False, (255, 255, 255))
+    text = font.render(CD + "> " + key_handler.command_input, False, font_color)
     if mouse_wheel_offset <= 0:
         screen.blit(text, (5, 5 + (font_size * len(visible_history))))
     if time.time() - prev_time >= cursor_delay:
@@ -77,10 +78,38 @@ def cls_command(args):
     history.clear()
 
 
+def exit_command(args):
+    global running
+    running = False
+
+
+def color_command(args):
+    global font_color
+    colors = {'1': (10, 42, 218),
+              '2': (19, 161, 14),
+              '3': (58, 150, 221),
+              '4': (197, 15, 31),
+              '5': (136, 23, 152),
+              '6': (193, 156, 0),
+              '7': (255, 255, 255),
+              '8': (118, 118, 118),
+              '9': (45, 120, 255),
+              }
+    if not args:
+        font_color = colors['7']
+        return
+    if args[0] in colors:
+        font_color = colors[args[0]]
+    else:
+        console(f"Unknown color {args[0]}")
+
+
 event_handler.add_event(Event("process input", process_command))
 event_handler.add_event(Event("command: cd", cd_command))
 event_handler.add_event(Event("command: help", help_command))
 event_handler.add_event(Event("command: cls", cls_command))
+event_handler.add_event(Event("command: exit", exit_command))
+event_handler.add_event(Event("command: color", color_command))
 
 key_handler = KeyHandler(CD, history, command_history)
 running = True
