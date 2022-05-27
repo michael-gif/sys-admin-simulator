@@ -1,0 +1,24 @@
+use real life commands to navigate in the game
+
+to connect to a server use the ssh command
+when in the server you can use the dir command
+there is a startup folder in each server
+you can write batch scripts and save them in the startup folder of each server
+
+features:
+network shares
+startup folder
+dir command
+cd command
+ability to create, open, edit and save files from the command line
+a home directory in each server and on the main computer
+shortcuts / .lnk files
+restart command
+shutdown command
+config files
+batch scripts
+drive mapping
+drive partitioning
+whoami command
+some way to get the specs of a computer / neofetch command
+connect to servers with ssh/telnet
