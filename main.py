@@ -103,9 +103,9 @@ def cd_command(args):
         full_path = hard_disk.path_exists(absolute_path)
         if full_path:
             CD = full_path
+            key_handler.CD = CD
         else:
             console("Could not find the path specified")
-        key_handler.CD = CD
 
 
 def help_command(args):
