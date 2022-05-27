@@ -99,7 +99,10 @@ def cd_command(args):
         else:
             if path.startswith("\"") and path.endswith("\""):
                 path = path[1:-1]
-            absolute_path = CD + "/" + path
+            if len(path) == 2 and path.endswith(":") and path[0] in string.ascii_letters:
+                absolute_path = path
+            else:
+                absolute_path = CD + "/" + path
         full_path = hard_disk.path_exists(absolute_path)
         if full_path:
             CD = full_path

@@ -15,16 +15,14 @@ class FileSystem:
         return self
 
     def path_exists(self, path):
-        if len(path) == 2 and path.endswith(':') and path[0] in string.ascii_letters:
-            if not self.get(path[0]):
-                return False
-            return path
         components = path.split('/')
         components[0] = components[0][0]
         part = self
         absolute_path = components[0] + ":"
         for i in range(len(components)):
             part = part.get(components[i])
+            if type(part) == Drive:
+                absolute_path = part.letter + ":"
             if type(part) == Folder:
                 absolute_path += "/" + part.name
             if not part:

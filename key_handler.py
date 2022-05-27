@@ -39,15 +39,34 @@ class KeyHandler:
                 self.command_input += key_ascii.upper()
                 return
             self.command_input += key_ascii
-        if key_ascii in string.digits:
+        combos = {
+            '1': '!',
+            '2': '"',
+            '3': '£',
+            '4': '$',
+            '5': '%',
+            '6': '^',
+            '7': '&',
+            '8': '*',
+            '9': '(',
+            '0': ')',
+            '[': '{',
+            ']': '}',
+            ';': ':',
+            '\'': '@',
+            '#': '~',
+            ',': '<',
+            '.': '>',
+            '/': '?',
+            '\\': '|'
+        }
+        if key_ascii in combos:
             if self.left_shift or self.right_shift:
-                self.command_input += "!\"£$%^&*()"[int(key_ascii) - 1]
+                self.command_input += combos[key_ascii]
                 return
             self.command_input += key_ascii
 
         # other keys
-        if key_ascii in "!\"£$%^&*()-=_+[]{};'#:@~,./<>?\\|":
-            self.command_input += key_ascii
         if key_ascii == "return":
             self.history.append(f"{self.CD}> {self.command_input}")
             self.command_history.append(self.command_input)
