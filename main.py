@@ -57,9 +57,14 @@ def help_command(args):
     console("This is the help page")
 
 
+def cls_command(args):
+    history.clear()
+
+
 event_handler.add_event(Event("process input", process_command))
 event_handler.add_event(Event("command: cd", cd_command))
 event_handler.add_event(Event("command: help", help_command))
+event_handler.add_event(Event("command: cls", cls_command))
 
 key_handler = KeyHandler(CD, history, command_history)
 running = True

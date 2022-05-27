@@ -7,7 +7,7 @@ class EventHandler:
         self.events[event.name] = event
 
     def contains(self, event_name):
-        if self.events[event_name]:
+        if event_name in self.events:
             return True
         return False
 
