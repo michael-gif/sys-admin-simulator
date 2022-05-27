@@ -1,4 +1,6 @@
 import os
+import string
+
 import pygame
 import time
 
@@ -82,21 +84,25 @@ def cd_command(args):
     if not args:
         console(CD)
     else:
-        if args[0] == '.' or args[0] == './':
-            console(CD)
+        path = args[0].lower()
+        if path == '.' or path == './':
             return
-        if args[0] == '..':
+        if path == '..':
+            if len(CD) == 2 and CD.endswith(":") and CD[0] in string.ascii_letters:
+                console(CD)
+                return
             absolute_path = '/'.join(CD.split('/')[:-1])
-        elif args[0].startswith('./'):
-            absolute_path = CD + args[0][1:]
-        elif args[0].startswith(CD + "/"):
-            absolute_path = args[0]
+        elif path.startswith('./'):
+            absolute_path = CD + path[1:]
+        elif path.startswith(CD + "/"):
+            absolute_path = path
         else:
-            if args[0].startswith("\"") and args[0].endswith("\""):
-                args[0] = args[0][1:-1]
-            absolute_path = CD + "/" + args[0]
-        if hard_disk.path_exists(absolute_path):
-            CD = absolute_path
+            if path.startswith("\"") and path.endswith("\""):
+                path = path[1:-1]
+            absolute_path = CD + "/" + path
+        full_path = hard_disk.path_exists(absolute_path)
+        if full_path:
+            CD = full_path
         else:
             console("Could not find the path specified")
         key_handler.CD = CD
