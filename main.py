@@ -111,6 +111,13 @@ def cd_command(args):
             console("Could not find the path specified")
 
 
+def dir_command(args):
+    folder = hard_disk.get_folder(CD)
+    for key in folder.contents:
+        console(key)
+    console("")
+
+
 def help_command(args):
     console("This is the help page")
 
@@ -151,6 +158,7 @@ event_handler.add_event(Event("command: help", help_command))
 event_handler.add_event(Event("command: cls", cls_command))
 event_handler.add_event(Event("command: exit", exit_command))
 event_handler.add_event(Event("command: color", color_command))
+event_handler.add_event(Event("command: dir", dir_command))
 
 key_handler = KeyHandler(CD, history, command_history)
 running = True

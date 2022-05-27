@@ -10,6 +10,15 @@ class FileSystem:
             if drive_letter.lower() == drive.lower():
                 return self.drives[drive]
 
+    def get_folder(self, path):
+        absolute_path = self.path_exists(path)
+        parts = absolute_path.split("/")
+        parts[0] = parts[0][0]
+        location = self
+        for part in parts:
+            location = location.get(part)
+        return location
+
     def contains(self, drive):
         self.drives[drive.letter] = drive
         return self
@@ -28,6 +37,7 @@ class FileSystem:
             if not part:
                 return False
         return absolute_path
+
 
 class Drive:
     def __init__(self, letter):
