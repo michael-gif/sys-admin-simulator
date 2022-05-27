@@ -1,9 +1,14 @@
-import string
+import pygame
 
+pygame.font.init()
 
-class FileSystem:
+class Computer:
     def __init__(self):
         self.drives = {}
+        self.CD = "C:"
+        self.font_size = 12
+        self.font_color = (255, 255, 255)
+        self.font = pygame.font.SysFont("Consolas", self.font_size)
 
     def get(self, drive_letter):
         for drive in self.drives:
@@ -76,8 +81,8 @@ class Folder():
         return self
 
 
-hard_disk = FileSystem()
-hard_disk.contains(Drive("C")
+SysAdmin = Computer()
+SysAdmin.contains(Drive("C")
                    .contains(Folder("Windows"))
                    .contains(Folder("Users")
                              .contains(Folder("Default"))
@@ -102,4 +107,31 @@ hard_disk.contains(Drive("C")
                    .contains(Folder("Programs"))
                    .contains(Folder("Programs (x86)"))
                    )
-hard_disk.contains(Drive("D"))
+SysAdmin.contains(Drive("D"))
+
+Server = Computer()
+Server.contains(Drive("C")
+                   .contains(Folder("Windows"))
+                   .contains(Folder("Users")
+                             .contains(Folder("Default"))
+                             .contains(Folder("Ligma Balls")
+                                       .contains(Folder("Desktop"))
+                                       .contains(Folder("Documents"))
+                                       .contains(Folder("3D Objects"))
+                                       .contains(Folder("Contacts"))
+                                       .contains(Folder("Downloads"))
+                                       .contains(Folder("AppData"))
+                                       .contains(Folder("Favorites"))
+                                       .contains(Folder("Links"))
+                                       .contains(Folder("Favorites"))
+                                       .contains(Folder("Links"))
+                                       .contains(Folder("Music"))
+                                       .contains(Folder("OneDrive"))
+                                       .contains(Folder("Pictures"))
+                                       .contains(Folder("Saved Games"))
+                                       .contains(Folder("Searches"))
+                                       .contains(Folder("Videos"))
+                                       ))
+                   .contains(Folder("Programs"))
+                   .contains(Folder("Programs (x86)"))
+                   )

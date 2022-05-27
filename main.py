@@ -6,26 +6,20 @@ import time
 
 from key_handler import KeyHandler
 from event_system import event_handler, Event
-from file_system import hard_disk
+from computers import SysAdmin, Server
+
+computers = [SysAdmin, Server]
+localhost = computers[1]
 
 pygame.init()
 screen = pygame.display.set_mode((400, 400))#, pygame.FULLSCREEN)
 clock = pygame.time.Clock()
-CD = "C:"
-font_size = 12
-font_color = (255, 255, 255)
-font = pygame.font.SysFont("Consolas", font_size)
-
-
-def clear():
-    os.system('cls' if os.name == 'nt' else 'clear')
-
 
 history = []
 visible_history = []
 command_history = []
 x, y = screen.get_size()
-possible_lines = ((y - 5) // font_size) - 1
+possible_lines = ((y - 5) // localhost.font_size) - 1
 mouse_wheel_offset = 0
 def render_history():
     global visible_history, mouse_wheel_offset
@@ -38,8 +32,8 @@ def render_history():
     else:
         visible_history = history
     for i in range(len(visible_history)):
-        text = font.render(str(visible_history[i]), False, font_color)
-        screen.blit(text, (5, 5 + (i * font_size)))
+        text = localhost.font.render(str(visible_history[i]), False, localhost.font_color)
+        screen.blit(text, (5, 5 + (i * localhost.font_size)))
 
 
 def console(message):
@@ -51,16 +45,16 @@ cursor_delay = 0.5
 cursor_visible = False
 def render_input():
     global cursor_visible, prev_time
-    text = font.render(CD + "> " + key_handler.command_input, False, font_color)
+    text = localhost.font.render(localhost.CD + "> " + key_handler.command_input, False, localhost.font_color)
     if mouse_wheel_offset <= 0:
-        screen.blit(text, (5, 5 + (font_size * len(visible_history))))
+        screen.blit(text, (5, 5 + (localhost.font_size * len(visible_history))))
     if time.time() - prev_time >= cursor_delay:
         cursor_visible = not cursor_visible
         prev_time = time.time()
     if cursor_visible and mouse_wheel_offset <= 0:
-        cd_w, cd_l = font.size(CD + "> " + key_handler.command_input)
-        pygame.draw.line(screen, (255, 255, 255), (cd_w + 5, 5 + (font_size * (len(visible_history) + 1))),
-                         (cd_w + 10, 5 + (font_size * (len(visible_history) + 1))), 1)
+        cd_w, cd_l = localhost.font.size(localhost.CD + "> " + key_handler.command_input)
+        pygame.draw.line(screen, (255, 255, 255), (cd_w + 5, 5 + (localhost.font_size * (len(visible_history) + 1))),
+                         (cd_w + 10, 5 + (localhost.font_size * (len(visible_history) + 1))), 1)
 
 
 def process_command(command):
@@ -80,21 +74,20 @@ def process_command(command):
 
 
 def cd_command(args):
-    global CD
     if not args:
-        console(CD)
+        console(localhost.CD)
     else:
         path = args[0].lower()
         if path == '.' or path == './':
             return
         if path == '..':
-            if len(CD) == 2 and CD.endswith(":") and CD[0] in string.ascii_letters:
-                console(CD)
+            if len(localhost.CD) == 2 and localhost.CD.endswith(":") and localhost.CD[0] in string.ascii_letters:
+                console(localhost.CD)
                 return
-            absolute_path = '/'.join(CD.split('/')[:-1])
+            absolute_path = '/'.join(localhost.CD.split('/')[:-1])
         elif path.startswith('./'):
-            absolute_path = CD + path[1:]
-        elif path.startswith(CD + "/"):
+            absolute_path = localhost.CD + path[1:]
+        elif path.startswith(localhost.CD + "/"):
             absolute_path = path
         else:
             if path.startswith("\"") and path.endswith("\""):
@@ -102,17 +95,17 @@ def cd_command(args):
             if len(path) == 2 and path.endswith(":") and path[0] in string.ascii_letters:
                 absolute_path = path
             else:
-                absolute_path = CD + "/" + path
-        full_path = hard_disk.path_exists(absolute_path)
+                absolute_path = localhost.CD + "/" + path
+        full_path = localhost.path_exists(absolute_path)
         if full_path:
-            CD = full_path
-            key_handler.CD = CD
+            localhost.CD = full_path
+            key_handler.localhost.CD = localhost.CD
         else:
             console("Could not find the path specified")
 
 
 def dir_command(args):
-    folder = hard_disk.get_folder(CD)
+    folder = localhost.get_folder(localhost.CD)
     for key in folder.contents:
         console(key)
     console("")
@@ -132,7 +125,6 @@ def exit_command(args):
 
 
 def color_command(args):
-    global font_color
     colors = {'1': (10, 42, 218),
               '2': (19, 161, 14),
               '3': (58, 150, 221),
@@ -144,10 +136,10 @@ def color_command(args):
               '9': (45, 120, 255),
               }
     if not args:
-        font_color = colors['7']
+        localhost.font_color = colors['7']
         return
     if args[0] in colors:
-        font_color = colors[args[0]]
+        localhost.font_color = colors[args[0]]
     else:
         console(f"Unknown color {args[0]}")
 
@@ -160,7 +152,7 @@ event_handler.add_event(Event("command: exit", exit_command))
 event_handler.add_event(Event("command: color", color_command))
 event_handler.add_event(Event("command: dir", dir_command))
 
-key_handler = KeyHandler(CD, history, command_history)
+key_handler = KeyHandler(localhost.CD, history, command_history)
 running = True
 while running:
     events = pygame.event.get()
