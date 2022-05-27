@@ -148,7 +148,7 @@ running = True
 while running:
     events = pygame.event.get()
     for event in events:
-        if event.type == pygame.QUIT or event.type == pygame.KEYUP and event.key == pygame.K_ESCAPE:
+        if event.type == pygame.QUIT:
             running = False
         if event.type == pygame.KEYDOWN:
             key_handler.tick(event.key)
