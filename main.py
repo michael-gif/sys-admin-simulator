@@ -82,7 +82,6 @@ def cd_command(args):
             return
         if path == '..':
             if len(localhost.CD) == 2 and localhost.CD.endswith(":") and localhost.CD[0] in string.ascii_letters:
-                console(localhost.CD)
                 return
             absolute_path = '/'.join(localhost.CD.split('/')[:-1])
         elif path.startswith('./'):
