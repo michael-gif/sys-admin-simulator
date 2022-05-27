@@ -48,11 +48,14 @@ def process_command(command):
     if event_handler.contains(f"command: {parts[0]}"):
         event_handler.fire(f"command: {parts[0]}", parts[1:])
 
+
 def cd_command(args):
     console(CD)
 
+
 def help_command(args):
     console("This is the help page")
+
 
 event_handler.add_event(Event("process input", process_command))
 event_handler.add_event(Event("command: cd", cd_command))
