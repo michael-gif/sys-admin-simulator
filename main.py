@@ -4,6 +4,7 @@ import time
 
 from key_handler import KeyHandler
 from event_system import event_handler, Event
+from file_system import hard_disk
 
 pygame.init()
 screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
