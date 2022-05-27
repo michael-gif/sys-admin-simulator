@@ -41,7 +41,7 @@ class KeyHandler:
             self.command_input += key_ascii
         if key_ascii in string.digits:
             if self.left_shift or self.right_shift:
-                self.command_input += "!\"£$%^&*()"[int(key_ascii)]
+                self.command_input += "!\"£$%^&*()"[int(key_ascii) - 1]
                 return
             self.command_input += key_ascii
 

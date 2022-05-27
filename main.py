@@ -62,7 +62,17 @@ def render_input():
 
 
 def process_command(command):
-    parts = command.split(" ")
+    command += " "
+    parts = []
+    quote_counter = 0
+    prev_index = 0
+    for i in range(len(command)):
+        if command[i] == "\"":
+            quote_counter += 1
+        if command[i] == " " and quote_counter % 2 == 0:
+            parts.append(command[prev_index:i])
+            prev_index = i + 1
+
     if event_handler.contains(f"command: {parts[0]}"):
         event_handler.fire(f"command: {parts[0]}", parts[1:])
 
@@ -75,16 +85,21 @@ def cd_command(args):
         if args[0] == '.' or args[0] == './':
             console(CD)
             return
-        if args[0].startswith('./'):
+        if args[0] == '..':
+            absolute_path = '/'.join(CD.split('/')[:-1])
+        elif args[0].startswith('./'):
             absolute_path = CD + args[0][1:]
         elif args[0].startswith(CD + "/"):
             absolute_path = args[0]
         else:
+            if args[0].startswith("\"") and args[0].endswith("\""):
+                args[0] = args[0][1:-1]
             absolute_path = CD + "/" + args[0]
         if hard_disk.path_exists(absolute_path):
             CD = absolute_path
         else:
             console("Could not find the path specified")
+        key_handler.CD = CD
 
 
 def help_command(args):

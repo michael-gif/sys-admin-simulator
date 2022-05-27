@@ -6,16 +6,15 @@ class FileSystem:
         if drive_letter in self.drives:
             return self.drives[drive_letter]
 
-    def exists(self, drive_letter):
-        return drive_letter in self.drives
-
     def contains(self, drive):
         self.drives[drive.letter] = drive
         return self
 
     def path_exists(self, path):
-        if path.startswith("\"") and path.endswith("\""):
-            path = path[1:-1]
+        if len(path) == 2 and path.endswith(':'):
+            if not self.get(path[0]):
+                return False
+            return True
         components = path.split('/')
         components[0] = components[0][0]
         part = self
@@ -31,7 +30,6 @@ class Drive:
         self.contents = {}
 
     def get(self, name):
-        print(name)
         if name in self.contents:
             return self.contents[name]
 
@@ -88,4 +86,3 @@ hard_disk.contains(Drive("C")
                    .contains(Folder("Programs (x86)"))
                    )
 hard_disk.contains(Drive("D"))
-#print(hard_disk.drives['C'].contents)
