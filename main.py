@@ -9,6 +9,8 @@ from computers import SysAdmin, Server
 
 computers = [SysAdmin, Server]
 localhost = computers[0]
+prev_localhost = localhost
+ssh_session = False
 
 pygame.init()
 screen = pygame.display.set_mode((800, 400))#, pygame.FULLSCREEN)
@@ -119,7 +121,11 @@ def cls_command(args):
 
 
 def exit_command(args):
-    global running
+    global running, ssh_session, localhost
+    if ssh_session:
+        localhost = prev_localhost
+        ssh_session = False
+        return
     running = False
 
 
@@ -143,6 +149,23 @@ def color_command(args):
         console(f"Unknown color {args[0]}")
 
 
+def ipconfig_command(args):
+    console(localhost.ip)
+    console("")
+
+
+def ssh_command(args):
+    global localhost, ssh_session
+    for computer in computers:
+        if computer.hostname != "SysAdmin":
+            if computer.ip == args[0]:
+                prev_localhost = localhost
+                localhost = computer
+                ssh_session = True
+            else:
+                console(f"Unknown ip {args[0]}")
+
+
 event_handler.add_event(Event("process input", process_command))
 event_handler.add_event(Event("command: cd", cd_command))
 event_handler.add_event(Event("command: help", help_command))
@@ -150,6 +173,8 @@ event_handler.add_event(Event("command: cls", cls_command))
 event_handler.add_event(Event("command: exit", exit_command))
 event_handler.add_event(Event("command: color", color_command))
 event_handler.add_event(Event("command: dir", dir_command))
+event_handler.add_event(Event("command: ipconfig", ipconfig_command))
+event_handler.add_event(Event("command: ssh", ssh_command))
 
 key_handler = KeyHandler(localhost.CD, history, command_history)
 running = True
