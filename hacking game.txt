@@ -6,7 +6,7 @@ there is a startup folder in each server
 you can write batch scripts and save them in the startup folder of each server
 
 features:
-network shares
+X - network shares
 startup folder
 X - dir command
 X - cd command

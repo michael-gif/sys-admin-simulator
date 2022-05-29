@@ -196,6 +196,10 @@ def net_command(args):
                 console(f"Hostname: {c.hostname} Address: {c.ip}")
 
 
+def whoami_command(args):
+    console(localhost.hostname)
+
+
 event_handler.add_event(Event("process input", process_command))
 event_handler.add_event(Event("command: cd", cd_command))
 event_handler.add_event(Event("command: help", help_command))
@@ -206,6 +210,7 @@ event_handler.add_event(Event("command: dir", dir_command))
 event_handler.add_event(Event("command: ipconfig", ipconfig_command))
 event_handler.add_event(Event("command: ssh", ssh_command))
 event_handler.add_event(Event("command: net", net_command))
+event_handler.add_event(Event("command: whoami", whoami_command))
 
 key_handler = KeyHandler(localhost.CD, history, command_history)
 running = True
