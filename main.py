@@ -168,6 +168,30 @@ def ssh_command(args):
                 console(f"Unknown ip {args[0]}")
 
 
+def net_command(args):
+    if not args:
+        return
+    if args[0] == "share":
+        if len(args) == 1:
+            for share in localhost.shares:
+                console(f"Share name: {share.name} Resource: {share.path}")
+    if args[0] == "view":
+        if len(args) > 1:
+            addresses = [c.ip for c in computers]
+            hostnames = [c.hostname for c in computers]
+            computer = None
+            if args[1] in addresses or args[1] in hostnames:
+                computer = [c for c in computers if c.hostname == args[1] or c.ip == args[1]]
+            if not computer:
+                console("The network path was not found")
+                return
+            for share in computer.shares:
+                console(f"Share name: {share.name} Resource: {share.path}")
+        else:
+            for c in computers:
+                console(f"Hostname: {c.hostname} Address: {c.ip}")
+
+
 event_handler.add_event(Event("process input", process_command))
 event_handler.add_event(Event("command: cd", cd_command))
 event_handler.add_event(Event("command: help", help_command))
@@ -177,6 +201,7 @@ event_handler.add_event(Event("command: color", color_command))
 event_handler.add_event(Event("command: dir", dir_command))
 event_handler.add_event(Event("command: ipconfig", ipconfig_command))
 event_handler.add_event(Event("command: ssh", ssh_command))
+event_handler.add_event(Event("command: net", net_command))
 
 key_handler = KeyHandler(localhost.CD, history, command_history)
 running = True
