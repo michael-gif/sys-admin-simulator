@@ -3,10 +3,10 @@ import string
 import pygame
 import time
 
-from key_handler import KeyHandler
-from event_system import event_handler, Event
-from computers import SysAdmin, Server
-from command_manager import command_manager
+from Key_Handler import KeyHandler
+from Event_System import event_handler, Event
+from Computers import SysAdmin, Server
+from Command_Manager import command_manager
 
 computers = [SysAdmin, Server]
 localhost = computers[0]

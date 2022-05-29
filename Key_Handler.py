@@ -1,7 +1,7 @@
 import pygame
 import string
 
-from event_system import event_handler
+from Event_System import event_handler
 
 class KeyHandler:
     def __init__(self, CD, history, command_history):
