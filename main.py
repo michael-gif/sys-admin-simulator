@@ -177,11 +177,15 @@ def net_command(args):
                 console(f"Share name: {share.name} Resource: {share.path}")
     if args[0] == "view":
         if len(args) > 1:
+            if not args[1].startswith("\\\\"):
+                console("The network path was not found")
+                return
+            args[1] = args[1][2:]
             addresses = [c.ip for c in computers]
             hostnames = [c.hostname for c in computers]
             computer = None
             if args[1] in addresses or args[1] in hostnames:
-                computer = [c for c in computers if c.hostname == args[1] or c.ip == args[1]]
+                computer = [c for c in computers if c.hostname == args[1] or c.ip == args[1]][0]
             if not computer:
                 console("The network path was not found")
                 return
