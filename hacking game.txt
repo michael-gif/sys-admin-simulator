@@ -19,6 +19,6 @@ config files
 batch scripts
 drive mapping
 drive partitioning
-whoami command
+X - whoami command
 some way to get the specs of a computer / neofetch command
 X - connect to servers with ssh/telnet

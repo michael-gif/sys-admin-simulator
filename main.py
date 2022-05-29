@@ -6,6 +6,7 @@ import time
 from key_handler import KeyHandler
 from event_system import event_handler, Event
 from computers import SysAdmin, Server
+from command_manager import command_manager
 
 computers = [SysAdmin, Server]
 localhost = computers[0]
@@ -13,7 +14,7 @@ prev_localhost = localhost
 ssh_session = False
 
 pygame.init()
-screen = pygame.display.set_mode((800, 400))#, pygame.FULLSCREEN)
+screen = pygame.display.set_mode((800, 400))  # , pygame.FULLSCREEN)
 pygame.display.set_caption(f"cmd.exe - {localhost.hostname}")
 clock = pygame.time.Clock()
 
@@ -23,6 +24,8 @@ command_history = []
 x, y = screen.get_size()
 possible_lines = ((y - 5) // localhost.font_size) - 1
 mouse_wheel_offset = 0
+
+
 def render_history():
     global visible_history, mouse_wheel_offset
     if mouse_wheel_offset < 0:
@@ -45,6 +48,8 @@ def console(message):
 prev_time = 0
 cursor_delay = 0.5
 cursor_visible = False
+
+
 def render_input():
     global cursor_visible, prev_time
     text = localhost.font.render(localhost.CD + "> " + key_handler.command_input, False, localhost.font_color)
@@ -70,9 +75,7 @@ def process_command(command):
         if command[i] == " " and quote_counter % 2 == 0:
             parts.append(command[prev_index:i])
             prev_index = i + 1
-
-    if event_handler.contains(f"command: {parts[0]}"):
-        event_handler.fire(f"command: {parts[0]}", parts[1:])
+    command_manager.execute(parts[0], parts[1:])
 
 
 def cd_command(args):
@@ -201,16 +204,16 @@ def whoami_command(args):
 
 
 event_handler.add_event(Event("process input", process_command))
-event_handler.add_event(Event("command: cd", cd_command))
-event_handler.add_event(Event("command: help", help_command))
-event_handler.add_event(Event("command: cls", cls_command))
-event_handler.add_event(Event("command: exit", exit_command))
-event_handler.add_event(Event("command: color", color_command))
-event_handler.add_event(Event("command: dir", dir_command))
-event_handler.add_event(Event("command: ipconfig", ipconfig_command))
-event_handler.add_event(Event("command: ssh", ssh_command))
-event_handler.add_event(Event("command: net", net_command))
-event_handler.add_event(Event("command: whoami", whoami_command))
+command_manager.add_command("cd", cd_command)
+command_manager.add_command("help", help_command)
+command_manager.add_command("cls", cls_command)
+command_manager.add_command("exit", exit_command)
+command_manager.add_command("color", color_command)
+command_manager.add_command("dir", dir_command)
+command_manager.add_command("ipconfig", ipconfig_command)
+command_manager.add_command("ssh", ssh_command)
+command_manager.add_command("net", net_command)
+command_manager.add_command("whoami", whoami_command)
 
 key_handler = KeyHandler(localhost.CD, history, command_history)
 running = True
