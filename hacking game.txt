@@ -8,10 +8,10 @@ you can write batch scripts and save them in the startup folder of each server
 features:
 network shares
 startup folder
-dir command
-cd command
+X - dir command
+X - cd command
 ability to create, open, edit and save files from the command line
-a home directory in each server and on the main computer
+X - a home directory in each server and on the main computer
 shortcuts / .lnk files
 restart command
 shutdown command
@@ -21,4 +21,4 @@ drive mapping
 drive partitioning
 whoami command
 some way to get the specs of a computer / neofetch command
-connect to servers with ssh/telnet
+X - connect to servers with ssh/telnet
